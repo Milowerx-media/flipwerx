@@ -38,7 +38,9 @@ label{display:flex;flex-direction:column;gap:3px;color:var(--muted);font-size:12
 #app{display:grid;height:100%;grid-template-columns:90px minmax(0,1fr) 300px;grid-template-rows:44px minmax(0,1fr) 230px;
   grid-template-areas:"top top top" "tools stage side" "tl tl side"}
 #top{grid-area:top;display:flex;align-items:center;gap:10px;padding:0 10px;background:var(--panel);border-bottom:1px solid var(--line);overflow-x:auto}
-#top .brand{font-weight:700;letter-spacing:.02em;white-space:nowrap;background:linear-gradient(90deg,#ff9f0a,#ff453a 55%,#64aaff);-webkit-background-clip:text;background-clip:text;color:transparent}
+#top .ver{margin-left:6px;height:20px;padding:0 7px;font:600 10.5px var(--mono);color:var(--muted);background:#24282d;border:1px solid var(--line);border-radius:10px;cursor:pointer;align-self:center}
+.ver:hover{color:var(--text);border-color:#6b737d}
+.brand{font-weight:700;letter-spacing:.02em;white-space:nowrap;background:linear-gradient(90deg,#ff9f0a,#ff453a 55%,#64aaff);-webkit-background-clip:text;background-clip:text;color:transparent}
 #menubar{display:flex;gap:0;margin-left:4px}
 #menubar button{background:none;border:none;padding:5px 9px;border-radius:4px;color:var(--text)}
 #menubar button:hover,#menubar button.open{background:#3a3f46}
@@ -232,6 +234,33 @@ details td:first-child{font-family:var(--mono);color:var(--accent);white-space:n
 .clip.csel{box-shadow:inset 0 0 0 2px var(--accent);z-index:2}
 .clip.ccopy{outline:1px dashed #fff}
 .clip.missing{background:repeating-linear-gradient(45deg,#2a2a2a 0 6px,#353535 6px 12px)}
+.fwin{position:fixed;z-index:40;display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:10px;box-shadow:0 14px 40px rgba(0,0,0,.5);overflow:hidden;resize:both;min-width:280px;min-height:200px}
+.fwbar{display:flex;align-items:center;gap:8px;padding:6px 8px 6px 12px;background:linear-gradient(#3a3f46,#2c3036);border-bottom:1px solid var(--line);cursor:move;user-select:none;flex:none}
+.fwbar b{font-size:12.5px;white-space:nowrap}
+.fwbar .hint{margin:0;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fwbar button{height:24px;padding:0 8px;font-size:12px}
+.pwin iframe{flex:1;border:0;width:100%;background:#323232;display:block}
+#fpwin{right:300px;bottom:230px;width:580px;height:500px}
+.fpbody{flex:1;display:flex;flex-direction:column;min-height:0;padding:10px;gap:10px}
+.fptop{display:flex;gap:12px;flex:none}
+.fpprev{width:172px;height:172px;flex:none;border-radius:8px;border:1px solid var(--line);display:grid;place-items:center;overflow:hidden;position:relative}
+.fpprev svg{width:100%;height:100%}
+.fpprev .cap{position:absolute;left:6px;bottom:5px;font:11px var(--mono);color:#222;background:rgba(255,255,255,.85);padding:1px 5px;border-radius:3px}
+.fpprev .empty{color:var(--muted);font-size:12px;padding:10px;text-align:center}
+.fpctl{flex:1;display:flex;flex-direction:column;gap:8px;min-width:0}
+.fpctl label{margin:0}
+.fpnav{display:flex;align-items:center;gap:8px}
+.fpnav span{flex:1;text-align:center;font-size:12px;color:var(--muted)}
+.fprow{display:flex;gap:10px}
+.fprow label{flex:1;min-width:0}
+.fpgrid{flex:1;overflow:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--fps,76px),1fr));gap:6px;align-content:start;padding:2px}
+.fpgrid .empty{grid-column:1/-1;color:var(--muted);font-size:12.5px;padding:8px}
+.fpk{display:flex;flex-direction:column;padding:3px;border-radius:7px;border:1px solid var(--line);background:#24282d;cursor:pointer;min-width:0}
+.fpk svg{width:100%;aspect-ratio:1;border-radius:4px;display:block}
+.fpk span{font:10.5px var(--mono);color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:3px;text-align:center}
+.fpk:hover{border-color:#7d8792}
+.fpk.on{border-color:var(--accent);box-shadow:inset 0 0 0 2px var(--accent)}
+.fpk.on span{color:var(--text)}
 #splitwin{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:48}
 #splitwin .sw{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(1200px,94vw);max-height:90vh;display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line);border-radius:10px;box-shadow:0 18px 50px rgba(0,0,0,.55);overflow:hidden}
 #swbar{display:flex;align-items:center;gap:12px;padding:8px 10px 8px 14px;background:linear-gradient(#3a3f46,#2c3036);border-bottom:1px solid var(--line);cursor:move;user-select:none}
@@ -310,7 +339,7 @@ details td:first-child{font-family:var(--mono);color:var(--accent);white-space:n
 <body>
 <div id="app">
   <header id="top">
-    <span class="brand">Loopwerx</span>
+    <span class="brand">Loopwerx</span><button type="button" class="ver" id="verBtn" title="Loopwerx version. Click to see what's new."></button>
     <nav id="menubar" role="menubar" aria-label="Main menu">
       <button role="menuitem" data-menu="file">File</button><button role="menuitem" data-menu="edit">Edit</button><button role="menuitem" data-menu="view">View</button><button role="menuitem" data-menu="insert">Insert</button><button role="menuitem" data-menu="modify">Modify</button><button role="menuitem" data-menu="control">Control</button><button role="menuitem" data-menu="commands">Commands</button><button role="menuitem" data-menu="help">Help</button>
     </nav>
@@ -472,6 +501,22 @@ details td:first-child{font-family:var(--mono);color:var(--accent);white-space:n
     <div class="row2"><button type="button" id="outcopy">Copy</button><button type="button" id="outclose">Close</button></div>
   </div>
 </div>
+<div id="fpwin" class="fwin" hidden role="dialog" aria-labelledby="fptitle">
+  <div class="fwbar" id="fpbar"><b id="fptitle">Frame Picker</b><span class="hint" id="fpsub"></span><button type="button" data-fp="close" aria-label="Close Frame Picker" title="Close (F)">✕</button></div>
+  <div class="fpbody">
+    <div class="fptop">
+      <div class="fpprev" id="fpprev" aria-live="polite"></div>
+      <div class="fpctl">
+        <div class="fpnav"><button type="button" data-fp="pk" title="Go to the previous keyframe on this layer">◀ Key</button><span id="fpat"></span><button type="button" data-fp="nk" title="Go to the next keyframe on this layer">Key ▶</button></div>
+        <label for="fpslide">Showing <b id="fpcur"></b><input type="range" id="fpslide" min="1" max="1" value="1"></label>
+        <div class="fprow"><label for="fpfilter">Show<select id="fpfilter"><option value="all">Every frame</option><option value="keys">Keyframes inside the symbol</option><option value="labels">Labelled frames</option></select></label><label for="fpsize">Size<input type="range" id="fpsize" min="40" max="180" value="76"></label></div>
+        <label class="chk" for="fpauto"><input type="checkbox" id="fpauto" checked>Make a keyframe when I pick</label>
+        <div class="btns" style="margin-top:0"><button type="button" data-fp="open" title="Open the symbol at the frame that's showing">Open symbol at this frame</button></div>
+      </div>
+    </div>
+    <div class="fpgrid" id="fpgrid"></div>
+  </div>
+</div>
 <div id="splitwin" hidden>
   <div class="sw" role="dialog" aria-labelledby="swtitle">
     <div id="swbar"><b id="swtitle">Split audio</b><span class="hint" id="swinfo"></span><button type="button" data-sw="close" aria-label="Close" title="Close (Esc)">✕</button></div>
@@ -515,7 +560,9 @@ details td:first-child{font-family:var(--mono);color:var(--accent);white-space:n
 'use strict';
 const $ = s => document.querySelector(s);
 const NS = 'http://www.w3.org/2000/svg';
-const LW = 170, CW = 16, RH = 26;
+const LW = 170, RH = 26; let CW = 16;
+const TL_ZOOMS = [4, 6, 8, 10, 12, 16, 20, 26, 34, 44];
+let focusZone = 'stage';
 const STORE = 'symbol-timeline-project-v1';
 function S(tag, attrs) { const e = document.createElementNS(NS, tag); if (attrs) for (const k in attrs) if (attrs[k] != null) e.setAttribute(k, attrs[k]); return e; }
 let uidN = 0;
@@ -633,7 +680,9 @@ function renderProjName() {
   el.innerHTML = `<b>${esc(proj.name)}</b>${st}`;
 }
 function resetHistory() { hist = [JSON.stringify(P)]; hi = 0; }
+let docVer = 0;
 function commit() {
+  docVer++;
   hist = hist.slice(0, hi + 1); hist.push(JSON.stringify(P));
   if (hist.length > 200) hist.shift();
   hi = hist.length - 1; persist(); markDirty(); renderAll();
@@ -668,6 +717,36 @@ function innerFrame(inst, off) {
   return (ff + off) % n;
 }
 function strokeOf(e) { return (e.sw > 0 && e.stroke) ? e.stroke : 'none'; }
+/* Flash-style part selection: one click picks the fill or the stroke under the pointer, a double-click picks both */
+let selPart = new Map(), selWhole = new Set(), partClick = true;
+try { partClick = localStorage.getItem('loopwerx-partclick') !== '0'; } catch (e) {}
+const twoPart = e => !!e && ['rect', 'ellipse', 'path'].includes(e.type) && !!e.fill && e.sw > 0 && !!e.stroke && e.stroke !== 'none';
+function partAt(e, off, p) {
+  let best = Infinity, sw = 0;
+  for (const pr of primsEl(e, off, 0)) {
+    if (!pr.stroke || pr.stroke === 'none') continue; sw = Math.max(sw, pr.sw || 0);
+    for (const r0 of pr.rings) {
+      const r = densify(r0, pr.closed, 3), n = r.length, segs = pr.closed ? n : n - 1;
+      for (let i = 0; i < segs; i++) { const a = r[i], b = r[(i + 1) % n], dx = b[0] - a[0], dy = b[1] - a[1], u = clamp(((p.x - a[0]) * dx + (p.y - a[1]) * dy) / ((dx * dx + dy * dy) || 1), 0, 1); best = Math.min(best, Math.hypot(p.x - a[0] - u * dx, p.y - a[1] - u * dy)); }
+    }
+  }
+  return best <= sw / 2 + 4 / screenScale() ? 'stroke' : 'fill';
+}
+/* before moving, transforming or copying a part, split it off into its own shape (as Flash does) */
+function splitParts() {
+  if (!selPart.size) return;
+  autoKey(selItems().map(it => it.li));
+  const ns = new Set(sel);
+  for (const [id, part] of selPart) {
+    if (!sel.has(id)) continue; const f = findEl(id); if (!f || !twoPart(f.el)) continue;
+    const e = f.el, i = f.key.els.indexOf(e), c = Object.assign(clone(e), { id: uid() });
+    if (part === 'fill') { c.stroke = null; c.sw = 0; e.fill = null; e.grad = null; f.key.els.splice(i, 0, c); }
+    else { c.fill = null; c.grad = null; e.stroke = null; e.sw = 0; f.key.els.splice(i + 1, 0, c); }
+    ns.delete(id); ns.add(c.id);
+  }
+  sel = ns; selPart.clear();
+}
+function togglePartClick() { partClick = !partClick; try { localStorage.setItem('loopwerx-partclick', partClick ? '1' : '0'); } catch (e) {} if (!partClick) selPart.clear(); renderAll(); toast(partClick ? 'One click selects the fill or the stroke; double-click selects both' : 'One click selects the whole shape'); }
 const alphaOf = e => (e.alpha == null ? 1 : e.alpha);
 
 /* tweens: k.tween is true (classic) or 'shape' */
@@ -1757,6 +1836,20 @@ function drawOverlay() {
   if (tool === 'subsel' && sel.size === 1 && !playing) drawSubPoints([...sel][0]);
   if (lasso && lasso.pts.length > 1) overlayG.appendChild(S('path', { class: 'marq', d: 'M' + lasso.pts.map(q => q.x + ' ' + q.y).join('L') + 'Z' }));
   if (bonePrev) overlayG.appendChild(S('line', { class: 'rline', x1: bonePrev.a.x, y1: bonePrev.a.y, x2: bonePrev.b.x, y2: bonePrev.b.y, 'stroke-width': 3 }));
+  if (selPart.size && !playing) {
+    const k = 1 / screenScale(), defs = S('defs'), pat = S('pattern', { id: 'selHatch', width: 6 * k, height: 6 * k, patternUnits: 'userSpaceOnUse', patternTransform: 'rotate(45)' });
+    pat.appendChild(S('rect', { width: 6 * k, height: 6 * k, fill: 'rgba(10,132,255,.16)' })); pat.appendChild(S('line', { x1: 0, y1: 0, x2: 0, y2: 6 * k, stroke: '#0a84ff', 'stroke-width': 2.2 * k }));
+    defs.appendChild(pat); overlayG.appendChild(defs);
+    for (const [id, part] of [...selPart]) {
+      if (!sel.has(id)) { selPart.delete(id); continue; }
+      const f = findEl(id); if (!f) continue; const e = dispEl(id) || f.el;
+      for (const pr of primsEl(e, C().frame - f.key.f, 0)) {
+        const d = primD(pr);
+        if (part === 'fill' && pr.fill) overlayG.appendChild(S('path', { d, fill: 'url(#selHatch)', stroke: 'none', 'fill-rule': pr.rule || 'nonzero', 'pointer-events': 'none' }));
+        if (part === 'stroke' && pr.stroke && pr.stroke !== 'none') overlayG.appendChild(S('path', { d, fill: 'none', stroke: '#0a84ff', 'stroke-opacity': .7, 'stroke-width': Math.max(pr.sw, 2 * k), 'stroke-dasharray': `${4 * k} ${3 * k}`, 'stroke-linejoin': 'round', 'stroke-linecap': 'round', 'pointer-events': 'none' }));
+      }
+    }
+  }
   const single = sel.size === 1 && tool === 'select' && !playing;
   for (const id of sel) {
     const node = contentG.querySelector(`[data-id="${id}"]`); if (!node) continue;
@@ -1935,16 +2028,18 @@ svg.addEventListener('pointerdown', ev => {
       if (lastClick.id === id && now - lastClick.t < 380) {
         const f = findEl(id); lastClick = { id: null, t: 0 };
         if (f && f.el.type === 'instance') { enterInPlace(f.el, f.key); return; }
+        if (f && twoPart(f.el)) { selPart.delete(id); sel = new Set([id]); selWhole = new Set([id]); drag = { mode: 'move', start: p, orig: null, moved: false }; renderAll(); return; }
       }
       lastClick = { id, t: now };
-      if (ev.shiftKey) { sel.has(id) ? sel.delete(id) : sel.add(id); }
-      else if (!sel.has(id)) sel = new Set([id]);
+      const fe = findEl(id), part = partClick && fe && twoPart(fe.el) ? partAt(fe.el, C().frame - fe.key.f, p) : null;
+      if (ev.shiftKey) { if (sel.has(id)) { sel.delete(id); selPart.delete(id); } else { sel.add(id); if (part) selPart.set(id, part); } }
+      else if (!sel.has(id) || (part && sel.size === 1 && !selWhole.has(id) && selPart.get(id) !== part)) { sel = new Set([id]); selPart = new Map(part ? [[id, part]] : []); selWhole = new Set(); }
       drag = { mode: 'move', start: p, orig: null, moved: false };
     } else {
       if (ev.target.closest && ev.target.closest('[data-rigged]') && !ev.shiftKey) toast('This drawing is posed by bones here, so its lines are locked on this frame. Drag the bones to pose it, or right-click a bone and choose Reset pose to edit the lines.');
       if (lastClick.id === '__bg' && now - lastClick.t < 380 && ctx.length > 1) { lastClick = { id: null, t: 0 }; exitTo(ctx.length - 2); return; }
       lastClick = { id: '__bg', t: now };
-      if (!ev.shiftKey) sel.clear();
+      if (!ev.shiftKey) { sel.clear(); selPart.clear(); }
       marquee = { a: p, b: p, ca: [ev.clientX, ev.clientY], cb: [ev.clientX, ev.clientY] };
       drag = { mode: 'marquee' };
     }
@@ -2046,7 +2141,7 @@ svg.addEventListener('pointermove', ev => {
     if (ev.shiftKey) { if (Math.abs(dx) > Math.abs(dy)) dy = 0; else dx = 0; }
     if (!drag.moved && Math.abs(dx) + Math.abs(dy) < 1.5 / zoom) return;
     if (!drag.orig) {
-      autoKey(selItems().map(it => it.li));
+      autoKey(selItems().map(it => it.li)); splitParts();
       const items = selItems();
       if (items.length === 1) {
         const bones = getBones(items[0].key);
@@ -2307,6 +2402,7 @@ function drawLive() {
 }
 function setClip(e, abs) { if (!abs) { delete e.clip; return; } e.clip = abs.map(rg => rg.map(([x, y]) => [r2(x - e.x), r2(y - e.y)])); }
 function startTransform(h, p) {
+  splitParts();
   const id = [...sel][0]; let f = findEl(id); if (!f) return;
   if (curTL().layers[f.li].locked) return toast('This layer is locked');
   const made = autoKey([f.li]);
@@ -3146,10 +3242,17 @@ $('#bUpL').onclick = () => moveLayer(-1); $('#bDnL').onclick = () => moveLayer(1
 /* ---------- selection actions ---------- */
 function deleteSel() {
   const items = selItems(); if (!items.length) return;
-  for (const it of items) { const i = it.key.els.indexOf(it.el); if (i >= 0) it.key.els.splice(i, 1); }
-  sel.clear(); commit();
+  let parts = 0;
+  for (const it of items) {
+    const part = selPart.get(it.el.id);
+    if (part && twoPart(it.el)) { if (part === 'fill') { it.el.fill = null; it.el.grad = null; } else { it.el.stroke = null; it.el.sw = 0; } parts++; continue; }
+    const i = it.key.els.indexOf(it.el); if (i >= 0) it.key.els.splice(i, 1);
+  }
+  sel.clear(); selPart.clear(); commit();
+  if (parts) toast(parts > 1 ? `Deleted ${parts} parts` : 'Deleted. The rest of the shape is still there.');
 }
 function duplicateSel() {
+  splitParts();
   const items = selItems(); if (!items.length) return;
   const ns = new Set();
   for (const it of items) { const c = Object.assign(clone(it.el), { id: uid(), x: it.el.x + 12, y: it.el.y + 12 }); it.key.els.push(c); ns.add(c.id); }
@@ -3164,6 +3267,7 @@ function nudge(dx, dy) {
   }
   const items = editableItems(); if (!items.length) return; for (const it of items) { it.el.x = r2(it.el.x + dx); it.el.y = r2(it.el.y + dy); } commit(); }
 async function convertToSymbol(autoName) {
+  splitParts();
   const items = selItems(); if (!items.length) return toast('Select something on the stage first');
   let x1 = Infinity, y1 = Infinity, x2 = -Infinity, y2 = -Infinity;
   for (const it of items) { const n = contentG.querySelector(`[data-id="${it.el.id}"]`); if (!n) continue; const b = localBox(n); x1 = Math.min(x1, b.x1); y1 = Math.min(y1, b.y1); x2 = Math.max(x2, b.x2); y2 = Math.max(y2, b.y2); }
@@ -3331,6 +3435,7 @@ function clipSection() {
     <div class="btns">${n === 1 ? `<button data-act="csplitwin">Split audio…</button><button data-act="csplit" ${ph > c.start && ph < c.start + len ? '' : 'disabled'}>Split at playhead</button><button data-act="cplay">Play clip</button>` : ''}<button data-act="cdel">Delete</button></div></div>`;
 }
 function renderProps() {
+  fpRefreshSoon();
   const items = playing ? [] : selItems();
   let h = '';
   if (!items.length) {
@@ -3367,6 +3472,7 @@ function renderProps() {
       <div class="ffrow"><label for="p-first">First frame</label><button data-act="ff" data-d="-1" aria-label="Previous frame">−</button><input type="number" id="p-first" data-k="first" min="1" max="${n}" value="${(e.first | 0) + 1}"><button data-act="ff" data-d="1" aria-label="Next frame">+</button><span>of ${n}</span></div>
       ${lab}
       <h3>Frame picker</h3>
+      <div class="btns" style="margin-top:0"><button data-act="fpopen" class="on">Open Frame Picker window (F)</button></div>
       <div class="picker" id="picker"></div>
       <p class="hint">Sets what this keyframe shows from the symbol. Picking a frame while Looping is set to Loop switches it to Single frame.</p>
       ${sym ? layerPaletteHTML(e, sym) : ''}
@@ -3398,6 +3504,12 @@ function renderProps() {
       <label class="chk" for="p-dsoft" style="margin-top:8px"><input type="checkbox" id="p-dsoft" data-k="dsoft" ${b.soft ? 'checked' : ''}>Soft build</label>
       <p class="hint">${e.pts.length / 4} dabs, kept as vectors, so these settings can change at any time.</p>
       <div class="btns"><button data-act="convert">Convert to symbol</button><button data-act="dup">Duplicate</button><button data-act="del">Delete</button></div>`;
+  } else if (items.length === 1 && selPart.has(items[0].el.id) && twoPart(items[0].el)) {
+    const base = items[0].el, e = dispEl(base.id) || base, part = selPart.get(base.id), kind = { rect: 'rectangle', ellipse: 'oval', path: 'shape' }[e.type] || 'shape';
+    h = part === 'fill'
+      ? `<h2>Fill</h2><p class="hint" style="margin:0 0 6px">Only the fill of this ${kind} is selected. Delete removes just the fill; dragging pulls it away from its outline. Double-click the shape to select fill and stroke together.</p><div class="grid2"><label for="p-fill">Fill colour<input type="color" id="p-fill" data-k="fill" value="${e.fill || '#ffffff'}"></label><span></span></div>`
+      : `<h2>Stroke</h2><p class="hint" style="margin:0 0 6px">Only the outline of this ${kind} is selected. Delete removes just the stroke; dragging pulls it away from its fill. Double-click the shape to select fill and stroke together.</p><div class="grid2"><label for="p-stroke">Stroke colour<input type="color" id="p-stroke" data-k="stroke" value="${e.stroke || '#000000'}"></label>${num('Stroke width', 'sw', r2(e.sw), 1, 'min="0.5"')}</div>`;
+    h += `<div class="btns"><button data-act="delpart">Delete ${part}</button><button data-act="wholepart">Select fill and stroke</button></div>`;
   } else if (items.length === 1) {
     const base = items[0].el, e = dispEl(base.id) || base;
     const kind = { rect: 'Rectangle', ellipse: 'Oval', path: 'Brush stroke', fill: 'Fill' }[e.type] || 'Shape';
@@ -3508,6 +3620,9 @@ props.addEventListener('click', ev => {
   if (act === 'importtbr') { $('#tbrIn').click(); return; }
   if (act === 'sndimp') { $('#audioIn').click(); return; }
   if (act === 'sndfit') { fitTimelineToSound(); return; }
+  if (act === 'delpart') { deleteSel(); return; }
+  if (act === 'wholepart') { selPart.clear(); renderAll(); return; }
+  if (act === 'fpopen') { openFP(); return; }
   if (act === 'wpaint') { enterWPaint(); return; }
   if (act === 'wbdone') { exitWPaint(); return; }
   if (act === 'wbadd' || act === 'wbrem') { wbrush.mode = act === 'wbadd' ? 'add' : 'remove'; saveWB(); renderProps(); return; }
@@ -4051,6 +4166,7 @@ document.addEventListener('keydown', ev => {
 /* clipboard for objects and frames */
 let clip = null, frameClip = null;
 function copySel(cut) {
+  splitParts();
   const items = selItems(); if (!items.length) return toast('Select something first');
   clip = { els: items.map(it => clone(dispEl(it.el.id) || it.el)) };
   if (cut) deleteSel(); else toast(`Copied ${items.length} item${items.length > 1 ? 's' : ''}`);
@@ -4069,7 +4185,7 @@ function pasteClip(at) {
   sel = ns; setTool(tool === 'select' || tool === 'subsel' || tool === 'lattice' ? tool : 'select'); commit();
 }
 function selectAll() {
-  const tl = curTL(), f = C().frame; sel = new Set();
+  const tl = curTL(), f = C().frame; sel = new Set(); selPart.clear();
   tl.layers.forEach(l => { if (l.locked || !l.visible) return; const k = keyAt(l, f); if (k) k.els.forEach(e => { if (e.type !== 'erase') sel.add(e.id); }); });
   if (tool !== 'select') setTool('select'); renderAll();
 }
@@ -4393,14 +4509,18 @@ const MENUS = {
     { label: 'Duplicate', key: 'Ctrl+D', run: duplicateSel, disabled: !sel.size },
     { label: 'Delete', key: 'Del', run: deleteSel, disabled: !sel.size }, '-',
     { label: 'Select all', key: 'Ctrl+A', run: selectAll },
-    { label: 'Deselect all', key: 'Esc', run: () => { sel.clear(); renderAll(); }, disabled: !sel.size }, '-',
+    { label: 'Deselect all', key: 'Esc', run: () => { sel.clear(); selPart.clear(); renderAll(); }, disabled: !sel.size },
+    { label: 'One click selects fill or stroke', checked: partClick, run: togglePartClick }, '-',
     { label: 'Copy keyframe', run: copyFrames },
     { label: 'Paste keyframe', run: pasteFrames, disabled: !frameClip },
   ],
   view: () => [
     { label: 'Zoom in', key: '2', run: () => zoomBy(1.25) },
     { label: 'Zoom out', key: '1', run: () => zoomBy(1 / 1.25) },
-    { label: 'Fit stage in window', run: () => $('#zFit').click() }, '-',
+    { label: 'Fit stage in window', run: () => $('#zFit').click() },
+    { label: 'Zoom timeline in', key: '2 in timeline', run: () => tlZoom(1) },
+    { label: 'Zoom timeline out', key: '1 in timeline', run: () => tlZoom(-1) }, '-',
+    { label: 'Frame Picker', key: 'F', checked: !$('#fpwin').hidden, run: () => $('#fpwin').hidden ? openFP() : closeFP() },
     { label: 'Onion skin', checked: onion, run: () => $('#bOnion').click() },
     ctx.length > 1 ? { label: 'Back to Scene', key: 'Esc', run: () => exitTo(0) } : null,
     '-', { label: 'Tools', sub: toolsSub },
@@ -4438,10 +4558,38 @@ const MENUS = {
   help: () => [
     { label: 'Keyboard shortcuts', run: () => { const d = document.querySelector('#side details'); d.open = true; d.scrollIntoView({ block: 'nearest' }); } },
     { label: 'Right-click anything for more options', disabled: true },
-    { label: 'About Loopwerx', run: () => toast('Loopwerx, from Milowerx: a Flash-style animator with symbols, nested timelines, tweens, bones, lattices and paint brushes. Your projects are saved in this browser.') },
+    { label: "What's new", run: () => showWhatsNew() },
+    { label: 'About Loopwerx', run: () => showAbout() },
   ],
 };
 const menubar = $('#menubar');
+
+/* ---------- version: bump APP_VERSION and add a CHANGES entry with every update ---------- */
+const APP_VERSION = '0.9.0', APP_BUILD = '2026-11-25';
+const CHANGES = [
+  { v: '0.9.0', d: '2026-11-25', items: [
+    'Version number in the top bar, with this What\'s new list.',
+    'One click selects just the fill or just the stroke of a shape; a double-click selects both. Delete removes only the part you picked.',
+    '1 and 2 zoom the timeline after you click in it.',
+    'Frame Picker window (F): see every frame inside a symbol and click one to show it.',
+    'HTML panels inside .zxp extensions now open in their own window.',
+    'Saving and exporting work in an ordinary browser tab as well as in Claude.'
+  ] }
+];
+$('#verBtn').textContent = 'v' + APP_VERSION;
+function showWhatsNew() {
+  $('#outTitle').textContent = `What's new in Loopwerx v${APP_VERSION}`;
+  $('#outText').textContent = CHANGES.map(c => `v${c.v}  (${c.d})\n` + c.items.map(t => '  • ' + t).join('\n')).join('\n\n');
+  $('#outmodal').hidden = false;
+}
+function showAbout() { toast(`Loopwerx v${APP_VERSION} (built ${APP_BUILD}), from Milowerx: a Flash-style animator with symbols, nested timelines, tweens, bones, lattices and paint brushes. Your projects are saved in this browser.`); }
+$('#verBtn').addEventListener('click', showWhatsNew);
+/* say so once when a new version loads, so you can tell an update arrived */
+try {
+  const seen = localStorage.getItem('loopwerx-version');
+  if (seen && seen !== APP_VERSION) setTimeout(() => toast(`Loopwerx updated to v${APP_VERSION}. Click the version number in the top bar to see what's new.`), 900);
+  localStorage.setItem('loopwerx-version', APP_VERSION);
+} catch (e) {}
 function openTopMenu(btn) {
   menubar.querySelectorAll('button').forEach(b => b.classList.toggle('open', b === btn));
   const r = btn.getBoundingClientRect(); openMenu(r.left, r.bottom + 2, MENUS[btn.dataset.menu]());
@@ -4746,7 +4894,13 @@ function jsflRuntime() {
     trace(s) { out.push(String(s)); }, outputPanel: { trace(s) { out.push(String(s)); }, clear() { out = []; }, save() { return false; } },
     get version() { return 'Loopwerx JSFL 1.0 (Animate-style API subset)'; }, configURI: 'file:///Loopwerx/', configDirectory: '/Loopwerx/', scriptURI: 'file:///Loopwerx/Commands/',
     browseForFileURL() { out.push('fl.browseForFileURL: picking files from a script is not supported'); return null; }, browseForFolderURL() { return null; },
-    runScript() { out.push('fl.runScript: running other script files is not supported'); return ''; },
+    runScript(uri, fn, ...args) {
+      const files = self.__files || {}, u = decodeURIComponent(String(uri || '')).replace(/\\/g, '/');
+      const key = Object.keys(files).sort((a, b) => b.length - a.length).find(k => u === k || u.endsWith('/' + k)) || Object.keys(files).find(k => u.split('/').pop() === k.split('/').pop());
+      if (!key) { out.push('fl.runScript: ' + uri + ' is not part of this extension, so it was skipped'); return ''; }
+      self.__mods = self.__mods || {}; const m = self.__mods[key] || (self.__mods[key] = files[key](fl, fl, FLfile, alertF, confirmF, promptF) || {});
+      if (!fn) return ''; const f = m[fn]; return typeof f === 'function' ? f.apply(null, args) : '';
+    },
     createDocument() { return doc; }, openDocument() { return doc; }, closeDocument() {}, saveDocument() { return true; }, saveAll() {}, revertDocument() {},
     getThemeColor() { return '#2b2f35'; }, isFontInstalled() { return false; }, setActiveWindow() {}, selectTool() {}, showIdleMessage() {},
     xmlui: { get() { return ''; }, set() {}, accept() {}, cancel() {} }, tools: { activeTool: {}, toolObjs: [] },
@@ -4761,9 +4915,10 @@ function jsflRuntime() {
     P = ev.data.P; cur = ev.data.cur; selIds = ev.data.sel || []; symBoxes = ev.data.symBoxes || {};
     if (ev.data.fill) fillColor = ev.data.fill; if (ev.data.stroke) strokeColor = ev.data.stroke; if (ev.data.sw != null) strokeSize = ev.data.sw;
     let error = null;
-    try { self.__jsfl(fl, fl, FLfile, alertF, confirmF, promptF, doc); } catch (e) { error = (e && e.message) ? e.message + (e.lineNumber ? ' (line ' + e.lineNumber + ')' : '') : String(e); }
+    let ret; try { ret = self.__jsfl(fl, fl, FLfile, alertF, confirmF, promptF, doc); } catch (e) { error = (e && e.message) ? e.message + (e.lineNumber ? ' (line ' + e.lineNumber + ')' : '') : String(e); }
     for (const tl of [P.root, ...Object.values(P.symbols).map(s => s.tl)]) for (const l of tl.layers) { sortKeys(l); if (!l.keys.length || l.keys[0].f !== 0) l.keys.unshift({ f: 0, els: [] }); l.length = Math.max(l.length, ...l.keys.map(k => k.f + 1)); }
-    self.postMessage({ P, cur, sel: selIds, out, alerts, error });
+    let retS = ''; try { retS = ret == null ? '' : typeof ret === 'object' ? JSON.stringify(ret) : String(ret); } catch (e) { retS = String(ret); }
+    self.postMessage({ P, cur, sel: selIds, out, alerts, error, ret: retS });
   };
 }
 let jsflWorker = null;
@@ -4821,12 +4976,32 @@ async function installExtensionFiles(files) {
         extensions.push({ id: uid(), name: baseName(f.name), file: f.name, commands: [{ name: baseName(f.name), src }], notes: [] }); added++;
       } else if (/\.(zxp|mxp|zip)$/.test(lower)) {
         const JSZip = await loadJSZip(); const zip = await JSZip.loadAsync(await f.arrayBuffer());
-        const commands = [], notes = []; let name = baseName(f.name);
+        const commands = [], notes = []; let name = baseName(f.name), panels = [], files = null;
         const entries = Object.values(zip.files).filter(z => !z.dir);
+        const man = entries.find(z => /(^|\/)csxs\/manifest\.xml$/i.test(z.name));
+        if (man) {
+          const root = man.name.replace(/csxs\/manifest\.xml$/i, ''), xml = new DOMParser().parseFromString(await man.async('string'), 'application/xml');
+          const bn = xml.documentElement.getAttribute('ExtensionBundleName'); if (bn) name = bn;
+          for (const ex of xml.querySelectorAll('ExtensionList > Extension')) {
+            const id = ex.getAttribute('Id'), dx = [...xml.querySelectorAll('DispatchInfoList > Extension')].find(e => e.getAttribute('Id') === id); if (!dx) continue;
+            const q = sel0 => { const n = dx.querySelector(sel0); return n ? n.textContent.trim() : ''; }, type = q('UI > Type');
+            const mainP = q('Resources > MainPath'); if (!mainP || /^custom$/i.test(type)) continue;
+            const sz = dx.querySelector('Geometry > Size');
+            panels.push({ id, name: q('UI > Menu') || id, type: type || 'Panel', main: mainP.replace(/^\.\//, ''), script: q('Resources > ScriptPath').replace(/^\.\//, ''), w: +(sz && sz.querySelector('Width') ? sz.querySelector('Width').textContent : 320) || 320, h: +(sz && sz.querySelector('Height') ? sz.querySelector('Height').textContent : 420) || 420 });
+          }
+          files = {}; let total = 0;
+          for (const z of entries) {
+            if (!z.name.startsWith(root) || /^META-INF\//i.test(z.name.slice(root.length)) || /(^|\/)mimetype$/.test(z.name)) continue;
+            const rel = z.name.slice(root.length);
+            if (TEXT_EXT.test(rel)) { const v = await z.async('string'); total += v.length; files[rel] = { t: 'text', v }; }
+            else { const ext = (rel.split('.').pop() || '').toLowerCase(); if (!MIME[ext]) continue; const b64 = await z.async('base64'); if (b64.length > 4e6) continue; total += b64.length; files[rel] = { t: 'data', v: 'data:' + MIME[ext] + ';base64,' + b64 }; }
+            if (total > 40e6) { notes.push('The package is very large; some files were left out.'); break; }
+          }
+          if (panels.length) notes.push(`HTML panel${panels.length > 1 ? 's' : ''}: ${panels.map(p => p.name).join(', ')}. Panels open in a Loopwerx window and talk to Loopwerx's version of Flash's scripting API, so features Loopwerx doesn't have may not work.`);
+        }
         for (const z of entries) {
           const p = z.name, pl = p.toLowerCase();
           if (pl.endsWith('.mxi')) { const t = await z.async('string'); const m = t.match(/<macromedia-extension[^>]*\sname="([^"]+)"/i); if (m) name = m[1]; }
-          if (pl.endsWith('csxs/manifest.xml')) { const t = await z.async('string'); const m = t.match(/ExtensionBundleName="([^"]+)"/i) || t.match(/<Extension Id="([^"]+)"/i); if (m) name = m[1]; notes.push('Has an HTML panel (CEP). Panels cannot run in Loopwerx; any JSFL scripts inside are installed as commands.'); }
           if (pl.endsWith('.swf')) notes.push(`${p}: SWF panels and tools cannot run in a browser.`);
           if (pl.endsWith('.jsfl')) {
             const src = await z.async('string');
@@ -4834,8 +5009,10 @@ async function installExtensionFiles(files) {
             commands.push({ name: baseName(p), src });
           }
         }
-        if (!commands.length) notes.push('No JSFL commands were found in this package.');
-        extensions.push({ id: uid(), name, file: f.name, commands, notes: [...new Set(notes)] }); added++;
+        if (!commands.length && !panels.length) notes.push('No panels or JSFL commands were found in this package.');
+        const x = { id: uid(), name, file: f.name, commands: panels.length ? commands.filter(c => !/\/(tools)\//i.test(c.name)) : commands, notes: [...new Set(notes)], panels, files: panels.length ? files : null };
+        extensions.push(x); added++;
+        if (panels.length) setTimeout(() => openPanel(x.id, panels[0].id), 50);
       } else toast(`${f.name}: choose .jsfl, .zxp or .mxp files`);
     } catch (e) { toast(`${f.name} could not be read: ${e.message}`); }
   }
@@ -4844,9 +5021,9 @@ async function installExtensionFiles(files) {
 function showExtensions() {
   const ol = $('#olist');
   $('#otitle').textContent = 'Extensions';
-  $('#omodal .hint').textContent = 'Flash and Animate extensions installed in this browser. JSFL commands run against Loopwerx\'s version of Flash\'s scripting API; HTML or SWF panels and custom tools cannot run here.';
+  $('#omodal .hint').textContent = 'Flash and Animate extensions installed in this browser. HTML panels open in their own Loopwerx window, and JSFL commands run against Loopwerx\'s version of Flash\'s scripting API. SWF panels and custom tools cannot run here.';
   $('#omodal').hidden = false;
-  ol.innerHTML = (extensions.length ? extensions.map(x => `<div class="oitem" data-ext="${x.id}"><div class="meta"><div class="nm">${esc(x.name)}</div><div class="when">${esc(x.file)} · ${x.commands.length} command${x.commands.length === 1 ? '' : 's'}${x.commands.length ? ': ' + x.commands.map(c => esc(c.name)).join(', ') : ''}</div>${x.notes.map(n => `<div class="when" style="color:#ffb340">${esc(n)}</div>`).join('')}</div>${x.commands.length === 1 ? `<button data-xact="run">Run</button>` : ''}<button data-xact="del">Remove</button></div>`).join('')
+  ol.innerHTML = (extensions.length ? extensions.map(x => `<div class="oitem" data-ext="${x.id}"><div class="meta"><div class="nm">${esc(x.name)}</div><div class="when">${esc(x.file)}${(x.panels || []).length ? ` · ${x.panels.length} panel${x.panels.length > 1 ? 's' : ''}` : ''} · ${x.commands.length} command${x.commands.length === 1 ? '' : 's'}${x.commands.length ? ': ' + x.commands.map(c => esc(c.name)).join(', ') : ''}</div>${x.notes.map(n => `<div class="when" style="color:#ffb340">${esc(n)}</div>`).join('')}</div>${(x.panels || []).map(p => `<button data-xact="panel" data-pid="${esc(p.id)}">Open ${esc(p.name)}</button>`).join('')}${x.commands.length === 1 ? `<button data-xact="run">Run</button>` : ''}<button data-xact="del">Remove</button></div>`).join('')
     : '<p class="empty">No extensions installed yet.</p>') + '<div class="btns"><button data-xact="install">Install extension (.jsfl, .zxp, .mxp)…</button></div>';
 }
 $('#olist').addEventListener('click', async ev => {
@@ -4855,7 +5032,8 @@ $('#olist').addEventListener('click', async ev => {
   if (b.dataset.xact === 'install') { $('#extIn').click(); return; }
   const it = ev.target.closest('[data-ext]'), x = it && extensions.find(e => e.id === it.dataset.ext); if (!x) return;
   if (b.dataset.xact === 'run') { $('#omodal').hidden = true; runJSFL(x.commands[0].src, x.commands[0].name); }
-  if (b.dataset.xact === 'del') { if (!(await askConfirm(`Remove "${x.name}"?`))) return; extensions = extensions.filter(e => e !== x); saveExtensions(); showExtensions(); }
+  if (b.dataset.xact === 'panel') { $('#omodal').hidden = true; openPanel(x.id, b.dataset.pid); }
+  if (b.dataset.xact === 'del') { if (!(await askConfirm(`Remove "${x.name}"?`))) return; for (const pw of [...panelWins.values()]) if (pw.ext === x) closePanel(pw); extensions = extensions.filter(e => e !== x); saveExtensions(); showExtensions(); }
 }, true);
 $('#extIn').addEventListener('change', ev => { const files = [...ev.target.files]; ev.target.value = ''; if (files.length) installExtensionFiles(files); });
 $('#runIn').addEventListener('change', async ev => { const f = ev.target.files[0]; ev.target.value = ''; if (!f) return; runJSFL(await f.text(), baseName(f.name)); });
@@ -4864,7 +5042,9 @@ $('#outcopy').onclick = async () => { try { await navigator.clipboard.writeText(
 $('#outmodal').addEventListener('keydown', e => { if (e.key === 'Escape') { e.stopPropagation(); $('#outmodal').hidden = true; } });
 function commandsMenu() {
   const items = [];
-  if (!extensions.length) items.push({ label: 'No commands installed yet', disabled: true });
+  const pans = extensions.flatMap(x => (x.panels || []).map(p => ({ label: p.name, run: () => openPanel(x.id, p.id) })));
+  if (pans.length) items.push({ header: 'Panels' }, ...pans, '-');
+  if (!extensions.some(x => x.commands.length)) items.push({ label: 'No commands installed yet', disabled: true });
   for (const x of extensions) {
     if (x.commands.length === 1) items.push({ label: x.commands[0].name, run: () => runJSFL(x.commands[0].src, x.commands[0].name) });
     else if (x.commands.length > 1) items.push({ label: x.name, sub: x.commands.map(c => ({ label: c.name, run: () => runJSFL(c.src, c.name) })) });
@@ -5140,6 +5320,328 @@ document.addEventListener('keydown', ev => {
 }, true);
 svg.addEventListener('pointerdown', () => { if (clipSel.size) { clipSel = new Set(); renderTimeline(); renderProps(); } }, true);
 
+/* ---------- floating windows ---------- */
+function makeDraggable(win, bar, key) {
+  try { const r = JSON.parse(localStorage.getItem('loopwerx-win-' + key) || 'null'); if (r) Object.assign(win.style, { left: clamp(r.l, 0, innerWidth - 120) + 'px', top: clamp(r.t, 0, innerHeight - 60) + 'px', right: 'auto', bottom: 'auto', width: r.w + 'px', height: r.h + 'px' }); } catch (e) {}
+  const save = () => { const r = win.getBoundingClientRect(); try { localStorage.setItem('loopwerx-win-' + key, JSON.stringify({ l: r.left, t: r.top, w: r.width, h: r.height })); } catch (e) {} };
+  bar.addEventListener('pointerdown', ev => {
+    if (ev.button !== 0 || ev.target.closest('button,input,select')) return;
+    const r = win.getBoundingClientRect(), dx = ev.clientX - r.left, dy = ev.clientY - r.top;
+    Object.assign(win.style, { left: r.left + 'px', top: r.top + 'px', right: 'auto', bottom: 'auto' });
+    const mv = e => { win.style.left = clamp(e.clientX - dx, -r.width + 100, innerWidth - 100) + 'px'; win.style.top = clamp(e.clientY - dy, 0, innerHeight - 40) + 'px'; };
+    const up = () => { removeEventListener('pointermove', mv); removeEventListener('pointerup', up); save(); };
+    addEventListener('pointermove', mv); addEventListener('pointerup', up);
+  });
+  if (window.ResizeObserver) { let t = 0; new ResizeObserver(() => { clearTimeout(t); t = setTimeout(save, 300); }).observe(win); }
+}
+
+/* ---------- Frame Picker window: see inside a symbol and choose the frame it shows ---------- */
+const fp = { size: 76, filter: 'all', auto: true, sig: '', hover: null, live: false, raf: 0 };
+try { Object.assign(fp, JSON.parse(localStorage.getItem('loopwerx-fp') || '{}'), { sig: '', hover: null, live: false, raf: 0 }); } catch (e) {}
+const saveFPopts = () => { try { localStorage.setItem('loopwerx-fp', JSON.stringify({ size: fp.size, filter: fp.filter, auto: fp.auto })); } catch (e) {} };
+/* the symbol to work on: the selected one, or the only symbol on the current layer at this frame */
+function fpTarget() {
+  const it = selItems().find(x => x.el.type === 'instance'); if (it) return it;
+  const tl = curTL(), li = C().layer, l = tl.layers[li]; if (!l) return null;
+  const k = keyAt(l, C().frame); if (!k) return null;
+  const ins = k.els.filter(e => e.type === 'instance'); return ins.length === 1 ? { el: ins[0], key: k, li } : null;
+}
+function fpFrames(sym) {
+  const n = tlLen(sym.tl), labels = symLabels(sym);
+  if (fp.filter === 'labels') return [...labels.keys()].sort((a, b) => a - b);
+  if (fp.filter === 'keys') { const set = new Set(); for (const l of sym.tl.layers) for (const k of l.keys) if (k.f < n) set.add(k.f); return [...set].sort((a, b) => a - b); }
+  return Array.from({ length: Math.min(n, 400) }, (_, i) => i);
+}
+function fpThumb(symId, f) { const t = thumb(symId, f); t.style.background = P.bg || '#fff'; return t; }
+function openFP() { $('#fpwin').hidden = false; fp.sig = ''; fpRefresh(); }
+function closeFP() { $('#fpwin').hidden = true; }
+function fpRefreshSoon() { if ($('#fpwin').hidden || fp.raf) return; fp.raf = requestAnimationFrame(() => { fp.raf = 0; fpRefresh(); }); }
+function fpShown(t) { const e = dispEl(t.el.id) || t.el; return innerFrame(e, C().frame - t.key.f); }
+function fpPreview(symId, f, labels) {
+  const pv = $('#fpprev'); pv.innerHTML = ''; pv.appendChild(fpThumb(symId, f));
+  const cap = document.createElement('span'); cap.className = 'cap'; cap.textContent = 'Frame ' + (f + 1) + (labels && labels.get(f) ? ' · ' + labels.get(f) : ''); pv.appendChild(cap);
+}
+function fpRefresh() {
+  if ($('#fpwin').hidden) return;
+  const t = fpTarget(), grid = $('#fpgrid'), slide = $('#fpslide');
+  $('#fpsize').value = fp.size; $('#fpfilter').value = fp.filter; $('#fpauto').checked = fp.auto; grid.style.setProperty('--fps', fp.size + 'px');
+  if (!t) {
+    if (fp.sig !== 'none') { fp.sig = 'none'; grid.innerHTML = '<p class="empty">Select a symbol on the stage, or click a layer that holds one symbol. Its frames show up here, and clicking one makes the symbol show it.</p>'; $('#fpprev').innerHTML = '<p class="empty">No symbol</p>'; }
+    $('#fpsub').textContent = ''; $('#fpat').textContent = `Frame ${C().frame + 1}`; $('#fpcur').textContent = ''; slide.disabled = true; return;
+  }
+  const e = dispEl(t.el.id) || t.el, sym = P.symbols[e.sym]; if (!sym) return;
+  const n = tlLen(sym.tl), labels = symLabels(sym), shown = fpShown(t), l = curTL().layers[t.li];
+  $('#fpsub').textContent = `${sym.name} on "${l.name}"`;
+  $('#fpat').textContent = `Timeline frame ${C().frame + 1}${t.key.f === C().frame ? ' · keyframe' : ''}`;
+  $('#fpcur').textContent = `frame ${shown + 1} of ${n}${labels.get(shown) ? ' · ' + labels.get(shown) : ''}${e.loop !== 'single' ? (e.loop === 'loop' ? ' (looping)' : ' (playing once)') : ''}`;
+  slide.disabled = false; slide.max = n; if (!fp.live) slide.value = shown + 1;
+  const sig = [e.sym, n, fp.filter, docVer, hi].join('|');
+  if (sig !== fp.sig) {
+    fp.sig = sig; grid.innerHTML = '';
+    const frames = fpFrames(sym);
+    if (!frames.length) grid.innerHTML = `<p class="empty">${fp.filter === 'labels' ? 'This symbol has no frame labels yet. Open it and give its keyframes labels (like A, E, O for mouth shapes).' : 'Nothing to show.'}</p>`;
+    for (const f of frames) {
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'fpk'; b.dataset.f = f; b.title = `Show frame ${f + 1}${labels.get(f) ? ' (' + labels.get(f) + ')' : ''}`;
+      b.appendChild(fpThumb(e.sym, f)); const sp = document.createElement('span'); sp.textContent = labels.get(f) ? `${f + 1} ${labels.get(f)}` : String(f + 1); b.appendChild(sp); grid.appendChild(b);
+    }
+    fp.pvKey = null;
+  }
+  grid.querySelectorAll('.fpk').forEach(b => b.classList.toggle('on', +b.dataset.f === shown));
+  const pf = fp.hover != null ? fp.hover : shown, pk = e.sym + '|' + pf + '|' + fp.sig;
+  if (fp.pvKey !== pk) { fp.pvKey = pk; fpPreview(e.sym, pf, labels); }
+}
+function fpPick(f, live) {
+  const t0 = fpTarget(); if (!t0) return;
+  const tl = curTL(), l = tl.layers[t0.li]; if (l.locked) { toast('This layer is locked'); return; }
+  let t = t0;
+  if (fp.auto && t.key.f !== C().frame) {
+    const k = t.key, nk = { f: C().frame, els: frameEls(l, k, C().frame).map(clone), tween: k.tween, ease: k.ease };
+    if (k.orient) nk.orient = true; if (k.bones) nk.bones = clone(k.bones);
+    l.keys.push(nk); sortKeys(l); const el = nk.els.find(x => x.id === t0.el.id); if (!el) return; t = { el, key: nk, li: t0.li };
+  }
+  t.el.first = clamp(f, 0, tlLen(P.symbols[t.el.sym].tl) - 1); if (t.el.loop === 'loop') t.el.loop = 'single';
+  sel = new Set([t.el.id]); selPart.clear(); C().layer = t.li;
+  if (live) { renderStage(); renderTimeline(); fpRefresh(); } else commit();
+}
+function fpStepKey(dir) {
+  const t = fpTarget(), li = t ? t.li : C().layer, l = curTL().layers[li]; if (!l) return;
+  const fs = l.keys.map(k => k.f), f = C().frame, nf = dir < 0 ? [...fs].reverse().find(x => x < f) : fs.find(x => x > f);
+  if (nf == null) { toast(dir < 0 ? 'No keyframe before this one' : 'No keyframe after this one'); return; }
+  C().layer = li; setFrame(nf);
+  const t2 = fpTarget(); if (t2) { sel = new Set([t2.el.id]); renderAll(); }
+}
+$('#fpgrid').addEventListener('click', ev => { const b = ev.target.closest('.fpk'); if (b) fpPick(+b.dataset.f); });
+$('#fpgrid').addEventListener('dblclick', ev => { const b = ev.target.closest('.fpk'); if (!b) return; const t = fpTarget(); if (!t) return; enterInPlace(t.el, t.key); C().frame = +b.dataset.f; renderAll(); });
+$('#fpgrid').addEventListener('pointerover', ev => { const b = ev.target.closest('.fpk'); const f = b ? +b.dataset.f : null; if (f !== fp.hover) { fp.hover = f; fpRefresh(); } });
+$('#fpgrid').addEventListener('pointerleave', () => { fp.hover = null; fpRefresh(); });
+$('#fpslide').addEventListener('input', ev => { fp.live = true; fpPick(+ev.target.value - 1, true); });
+$('#fpslide').addEventListener('change', ev => { fp.live = false; fpPick(+ev.target.value - 1, false); });
+$('#fpsize').addEventListener('input', ev => { fp.size = +ev.target.value; $('#fpgrid').style.setProperty('--fps', fp.size + 'px'); saveFPopts(); });
+$('#fpfilter').addEventListener('change', ev => { fp.filter = ev.target.value; fp.sig = ''; saveFPopts(); fpRefresh(); });
+$('#fpauto').addEventListener('change', ev => { fp.auto = ev.target.checked; saveFPopts(); });
+$('#fpwin').addEventListener('click', ev => {
+  const b = ev.target.closest('[data-fp]'); if (!b) return;
+  if (b.dataset.fp === 'close') closeFP();
+  else if (b.dataset.fp === 'pk') fpStepKey(-1);
+  else if (b.dataset.fp === 'nk') fpStepKey(1);
+  else if (b.dataset.fp === 'open') { const t = fpTarget(); if (!t) return; const f = fpShown(t); enterInPlace(t.el, t.key); C().frame = f; renderAll(); }
+});
+$('#fpwin').addEventListener('keydown', ev => {
+  if (ev.target.matches('input[type=range],select')) return;
+  const t = fpTarget(); if (!t) return;
+  const sym = P.symbols[(dispEl(t.el.id) || t.el).sym]; if (!sym) return;
+  const frames = fpFrames(sym), i = frames.indexOf(fpShown(t));
+  if (ev.key === 'ArrowRight' || ev.key === 'ArrowDown') { ev.preventDefault(); ev.stopPropagation(); fpPick(frames[Math.min(frames.length - 1, i + 1)] ?? 0); }
+  else if (ev.key === 'ArrowLeft' || ev.key === 'ArrowUp') { ev.preventDefault(); ev.stopPropagation(); fpPick(frames[Math.max(0, i - 1)] ?? 0); }
+});
+makeDraggable($('#fpwin'), $('#fpbar'), 'fp');
+
+/* ---------- HTML panels from .zxp extensions (CEP), with a stand-in for Adobe's CSInterface ---------- */
+const panelWins = new Map();
+const TEXT_EXT = /\.(html?|js|mjs|css|json|jsfl|jsx|xml|txt|svg|csv|md)$/i;
+const MIME = { png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', gif: 'image/gif', svg: 'image/svg+xml', webp: 'image/webp', ico: 'image/x-icon', woff: 'font/woff', woff2: 'font/woff2', ttf: 'font/ttf', otf: 'font/otf', mp3: 'audio/mpeg', wav: 'audio/wav' };
+function normPath(base, rel) {
+  rel = decodeURIComponent(String(rel).split(/[?#]/)[0]).replace(/\\/g, '/');
+  const parts = (rel.startsWith('/') ? [] : base.split('/').filter(Boolean)).concat(rel.split('/')), out = [];
+  for (const p of parts) { if (!p || p === '.') continue; if (p === '..') out.pop(); else out.push(p); }
+  return out.join('/');
+}
+const isLocalRef = u => u && !/^(?:[a-z][a-z0-9+.-]*:|\/\/|#)/i.test(u.trim());
+const dirOf = p => p.includes('/') ? p.slice(0, p.lastIndexOf('/') + 1) : '';
+function fileURL(F, p) { const f = F[p]; if (!f) return null; if (f.t === 'data') return f.v; const ext = (p.split('.').pop() || '').toLowerCase(); return 'data:' + (MIME[ext] || 'text/plain') + ';charset=utf-8,' + encodeURIComponent(f.v); }
+function cssFix(F, css, dir, depth = 0) {
+  css = css.replace(/@import\s+(?:url\()?\s*['"]?([^'")\s;]+)['"]?\s*\)?\s*;/gi, (m, u) => { if (!isLocalRef(u) || depth > 3) return m; const p = normPath(dir, u), f = F[p]; return f && f.t === 'text' ? cssFix(F, f.v, dirOf(p), depth + 1) : ''; });
+  return css.replace(/url\(\s*(['"]?)([^'")]+)\1\s*\)/gi, (m, q, u) => { if (!isLocalRef(u)) return m; const d = fileURL(F, normPath(dir, u)); return d ? `url("${d}")` : m; });
+}
+function cepShim(cfg) {
+  const pending = new Map(), listeners = {}; let seq = 0;
+  const post = m => parent.postMessage(Object.assign({ __lw: 1 }, m), '*');
+  const deliver = (type, data) => { (listeners[type] || []).slice().forEach(l => { try { l.fn.call(l.obj || null, { type, data: data || '', scope: 'APPLICATION', appId: 'FLPR', extensionId: cfg.id }); } catch (e) { console.error(e); } }); };
+  window.addEventListener('message', ev => {
+    const d = ev.data || {}; if (d.__lw !== 1) return;
+    if (d.type === 'result') { const cb = pending.get(d.id); pending.delete(d.id); if (cb) { try { cb(d.result); } catch (e) { console.error(e); } } }
+    if (d.type === 'event') deliver(d.event, d.data);
+  });
+  const col = (r, g, b) => ({ antialiasLevel: 0, type: 1, color: { red: r, green: g, blue: b, alpha: 255 } });
+  const host = { appName: 'FLPR', appVersion: '24.0.0', appLocale: 'en_US', appUILocale: 'en_US', appId: 'FLPR', isAppOnline: true,
+    appSkinInfo: { baseFontFamily: 'system-ui', baseFontSize: 12, appBarBackgroundColor: col(43, 47, 53), panelBackgroundColor: col(50, 50, 50), appBarBackgroundColorSRGB: col(43, 47, 53), panelBackgroundColorSRGB: col(50, 50, 50), systemHighlightColor: { red: 10, green: 132, blue: 255, alpha: 255 } } };
+  const root = '/Loopwerx/extensions/' + cfg.id;
+  const base = {
+    evalScript(script, cb) { const id = ++seq; if (typeof cb === 'function') pending.set(id, cb); post({ type: 'eval', id, script: String(script) }); },
+    getHostEnvironment: () => JSON.stringify(host), getSystemPath: t => (t === 'extension' || t === 'myDocuments' || !t) ? root : root,
+    getExtensionId: () => cfg.id, closeExtension: () => post({ type: 'close' }), requestOpenExtension: id => post({ type: 'open', ext: String(id) }),
+    getExtensions: () => JSON.stringify([{ id: cfg.id, name: cfg.name, basePath: root, mainPath: root + '/' + cfg.main, isAutoVisible: true, width: cfg.w, height: cfg.h, windowType: 'Panel' }]),
+    getNetworkPreferences: () => JSON.stringify({ isProxyEnabled: false }), initResourceBundle: () => JSON.stringify({}), dumpInstallationInfo: () => '',
+    getOSInformation: () => (navigator.platform || '').indexOf('Mac') === 0 ? 'Mac OS X 13.0.0' : 'Windows 10 64-bit',
+    openURLInDefaultBrowser: url => { post({ type: 'url', url: String(url) }); return JSON.stringify({ err: 0 }); },
+    addEventListener(type, fn, obj) { (listeners[type] = listeners[type] || []).push({ fn, obj }); },
+    removeEventListener(type, fn) { listeners[type] = (listeners[type] || []).filter(l => l.fn !== fn); },
+    dispatchEvent(ev) { try { const e = typeof ev === 'string' ? JSON.parse(ev) : ev; deliver(e.type, e.data); } catch (e) {} },
+    getScaleFactor: () => window.devicePixelRatio || 1, getMonitorScaleFactor: () => window.devicePixelRatio || 1, setScaleFactorChangedHandler() {},
+    getCurrentApiVersion: () => JSON.stringify({ major: 9, minor: 0, micro: 0 }), invokeSync: () => '', invokeAsync(n, a, cb) { if (typeof cb === 'function') cb(''); },
+    registerKeyEventsInterest() {}, setWindowTitle: t => post({ type: 'title', title: String(t) }), getWindowTitle: () => cfg.name, getCurrentImsUserId: () => '',
+    resizeContent: (w, h) => post({ type: 'resize', w, h }), setPanelFlyoutMenu() {}, updatePanelMenuItem: () => false, setContextMenu() {}, setContextMenuByJSON() {}, updateContextMenuItem() {}
+  };
+  for (const nm of ['localStorage', 'sessionStorage']) { let ok = false; try { ok = !!window[nm]; } catch (e) {} if (!ok) { const m = new Map(); const st = { getItem: k => (m.has(String(k)) ? m.get(String(k)) : null), setItem: (k, v) => { m.set(String(k), String(v)); }, removeItem: k => { m.delete(String(k)); }, clear: () => m.clear(), key: i => [...m.keys()][i] ?? null, get length() { return m.size; } }; try { Object.defineProperty(window, nm, { value: st, configurable: true }); } catch (e) {} } }
+  window.__adobe_cep__ = new Proxy(base, { get: (t, k) => (k in t ? t[k] : function () { return ''; }) });
+  const rel = p => { p = String(p).replace(/\\/g, '/').replace(/^file:\/\//, ''); const i = p.indexOf(root); return i >= 0 ? p.slice(i + root.length + 1) : null; };
+  const fs = { NO_ERROR: 0, ERR_UNKNOWN: 1, ERR_INVALID_PARAMS: 2, ERR_NOT_FOUND: 3, ERR_CANT_READ: 4, ERR_UNSUPPORTED_ENCODING: 5, ERR_CANT_WRITE: 6, ERR_OUT_OF_SPACE: 7, ERR_NOT_FILE: 8, ERR_NOT_DIRECTORY: 9, ERR_FILE_EXISTS: 10,
+    readFile: p => { const r = rel(p); return r != null && r in cfg.files ? { err: 0, data: cfg.files[r] } : { err: 3, data: '' }; },
+    stat: p => { const r = rel(p); return r != null && r in cfg.files ? { err: 0, data: { isFile: () => true, isDirectory: () => false, mtime: new Date() } } : { err: 3 }; },
+    readdir: () => ({ err: 3, data: [] }), writeFile: () => ({ err: 6 }), makedir: () => ({ err: 6 }), rename: () => ({ err: 6 }), deleteFile: () => ({ err: 6 }), chmod: () => ({ err: 6 }),
+    showOpenDialog: () => ({ err: 1, data: [] }), showOpenDialogEx: () => ({ err: 1, data: [] }), showSaveDialogEx: () => ({ err: 1, data: '' }) };
+  window.cep = window.cep || { fs, encoding: { UTF8: 'UTF-8', Base64: 'Base64' }, util: { openURLInDefaultBrowser: base.openURLInDefaultBrowser, registerExtensionUnloadCallback() {} }, process: { createProcess: () => ({ err: 1 }), isRunning: () => ({ err: 0, data: false }) } };
+  const ofetch = window.fetch && window.fetch.bind(window);
+  window.fetch = function (input, init) {
+    const u = typeof input === 'string' ? input : input && input.url;
+    if (u && !/^[a-z][a-z0-9+.-]*:|^\/\//i.test(u)) {
+      const parts = (cfg.dir + u.split(/[?#]/)[0]).split('/'), out = []; for (const p of parts) { if (!p || p === '.') continue; if (p === '..') out.pop(); else out.push(p); }
+      const k = out.join('/'); return Promise.resolve(k in cfg.files ? new Response(cfg.files[k], { status: 200 }) : new Response('', { status: 404, statusText: 'Not found' }));
+    }
+    return ofetch(input, init);
+  };
+}
+function buildPanelDoc(ext, pn) {
+  const F = ext.files || {}, main = normPath('', pn.main), dir = dirOf(main), html = F[main] && F[main].t === 'text' ? F[main].v : null;
+  if (html == null) throw new Error(`its page (${pn.main}) is missing from the package`);
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  const fixJS = t => t.replace(/<\/script/gi, '<\\/script');
+  for (const sc of [...doc.querySelectorAll('script[src]')]) {
+    const src = sc.getAttribute('src'); if (!isLocalRef(src)) continue;
+    const p = normPath(dir, src), f = F[p], n = doc.createElement('script');
+    for (const a of sc.attributes) if (a.name !== 'src' && a.name !== 'defer' && a.name !== 'async') n.setAttribute(a.name, a.value);
+    n.textContent = f && f.t === 'text' ? fixJS(f.v) : `console.warn(${JSON.stringify('Loopwerx: missing ' + p)})`; sc.replaceWith(n);
+  }
+  for (const ln of [...doc.querySelectorAll('link[href]')]) {
+    const href = ln.getAttribute('href'), rel = (ln.getAttribute('rel') || '').toLowerCase(); if (!isLocalRef(href)) continue;
+    const p = normPath(dir, href), f = F[p];
+    if (rel.includes('stylesheet')) { const st = doc.createElement('style'); st.textContent = f && f.t === 'text' ? cssFix(F, f.v, dirOf(p)) : ''; ln.replaceWith(st); }
+    else { const d = fileURL(F, p); if (d) ln.setAttribute('href', d); }
+  }
+  for (const st of doc.querySelectorAll('style')) st.textContent = cssFix(F, st.textContent, dir);
+  for (const el of doc.querySelectorAll('[src]:not(script)')) { const v = el.getAttribute('src'); if (isLocalRef(v)) { const d = fileURL(F, normPath(dir, v)); if (d) el.setAttribute('src', d); } }
+  for (const el of doc.querySelectorAll('[style]')) el.setAttribute('style', cssFix(F, el.getAttribute('style'), dir));
+  for (const el of doc.querySelectorAll('image[href], use[href]')) { const v = el.getAttribute('href'); if (isLocalRef(v)) { const d = fileURL(F, normPath(dir, v)); if (d) el.setAttribute('href', d); } }
+  const files = {}; for (const [p, f] of Object.entries(F)) if (f.t === 'text' && !/\.(html?)$/i.test(p) && f.v.length < 400000) files[p] = f.v;
+  const cfg = { id: pn.id, name: pn.name, main, dir, w: pn.w, h: pn.h, files };
+  const shim = doc.createElement('script'); shim.textContent = fixJS(`(${cepShim.toString()})(${JSON.stringify(cfg)});`);
+  (doc.head || doc.documentElement).insertBefore(shim, (doc.head || doc.documentElement).firstChild);
+  return '<!DOCTYPE html>\n' + doc.documentElement.outerHTML;
+}
+function openPanel(extId, panelId) {
+  const ext = extensions.find(x => x.id === extId), pn = ext && (ext.panels || []).find(p => p.id === panelId); if (!pn) return;
+  const key = extId + '|' + panelId, open = panelWins.get(key);
+  if (open) { open.win.style.zIndex = 41; return; }
+  let html; try { html = buildPanelDoc(ext, pn); } catch (e) { toast(`${pn.name} could not open: ${e.message}`); return; }
+  const win = document.createElement('div'); win.className = 'fwin pwin'; win.setAttribute('role', 'dialog');
+  const n = panelWins.size; Object.assign(win.style, { left: (120 + n * 30) + 'px', top: (90 + n * 30) + 'px', width: Math.min(innerWidth - 40, (pn.w || 320)) + 'px', height: Math.min(innerHeight - 40, (pn.h || 420) + 37) + 'px' });
+  win.innerHTML = `<div class="fwbar"><b></b><span class="hint">${esc(ext.name)}</span><button type="button" data-pw="log" title="Messages from this panel's scripts">Log</button><button type="button" data-pw="reload" title="Reload the panel" aria-label="Reload">↻</button><button type="button" data-pw="close" aria-label="Close">✕</button></div>`;
+  win.querySelector('b').textContent = pn.name;
+  const fr = document.createElement('iframe'); fr.setAttribute('sandbox', 'allow-scripts allow-forms allow-modals allow-popups'); fr.title = pn.name; fr.srcdoc = html; win.appendChild(fr);
+  document.body.appendChild(win);
+  const pw = { key, ext, panel: pn, win, iframe: fr, log: [], title: win.querySelector('b') };
+  panelWins.set(key, pw); makeDraggable(win, win.querySelector('.fwbar'), 'panel-' + pn.id);
+  win.addEventListener('pointerdown', () => { for (const o of panelWins.values()) o.win.style.zIndex = 40; win.style.zIndex = 41; }, true);
+  win.querySelector('.fwbar').addEventListener('click', ev => {
+    const b = ev.target.closest('[data-pw]'); if (!b) return;
+    if (b.dataset.pw === 'close') closePanel(pw);
+    else if (b.dataset.pw === 'reload') { try { fr.srcdoc = buildPanelDoc(ext, pn); } catch (e) {} }
+    else showOutput(pn.name, pw.log.slice(-300), [], '');
+  });
+}
+function closePanel(pw) { pw.win.remove(); panelWins.delete(pw.key); }
+let cepQ = Promise.resolve();
+function cepEval(pw, script) { const p = cepQ.then(() => cepRun(pw, script)); cepQ = p.catch(() => {}); return p; }
+async function cepRun(pw, script) {
+  const ext = pw.ext, pn = pw.panel, sp = pn.script && ext.files[normPath('', pn.script)], pre = sp && sp.t === 'text' ? sp.v : '';
+  let r = await jsflCore(`${pre}\n;return (\n${script}\n);`, ext);
+  if (r.syntax) { const cut = lastStatementCut(script); if (cut > 0 && script.slice(cut).trim()) r = await jsflCore(`${pre}\n;${script.slice(0, cut)}\nreturn (\n${script.slice(cut)}\n);`, ext); }
+  if (r.syntax) r = await jsflCore(`${pre}\n;${script}`, ext);
+  if (r.syntax) r = await jsflCore(script, ext, true);
+  if (r.syntax || r.error) { pw.log.push('Error: ' + (r.error || r.syntax) + '  in: ' + script.slice(0, 200)); return 'EvalScript error.'; }
+  if (r.out && r.out.length) pw.log.push(...r.out);
+  for (const a of r.alerts || []) toast(`${pn.name}: ${a}`);
+  applyJSFL(r, true);
+  return r.ret;
+}
+/* where the last top-level statement starts, so "a = 1; b" can hand back b, as ExtendScript does */
+function lastStatementCut(src) {
+  let depth = 0, q = null, cut = -1;
+  for (let i = 0; i < src.length; i++) {
+    const c = src[i];
+    if (q) { if (c === '\\') i++; else if (c === q) q = null; continue; }
+    if (c === '"' || c === "'" || c === '`') q = c;
+    else if (c === '/' && src[i + 1] === '/') { const j = src.indexOf('\n', i); if (j < 0) break; i = j; }
+    else if ('([{'.includes(c)) depth++; else if (')]}'.includes(c)) depth--;
+    else if ((c === ';' || c === '\n') && depth === 0 && src.slice(i + 1).trim()) cut = i + 1;
+  }
+  return cut;
+}
+/* run JSFL quietly and hand back what it returned: used by panels */
+function jsflCore(src, ext, noFiles) {
+  return new Promise(resolve => {
+    const symBoxes = {}; for (const id of Object.keys(P.symbols)) { const b = symRawBox(id); if (b) symBoxes[id] = b; }
+    const files = !noFiles && ext ? Object.entries(ext.files || {}).filter(([p, f]) => /\.jsfl$/i.test(p) && f.t === 'text').map(([p, f]) => {
+      const names = [...new Set([...f.v.matchAll(/(?:^|[\s;{}])function\s+([A-Za-z_$][\w$]*)\s*\(/g)].map(m => m[1]))];
+      return `${JSON.stringify(p)}: function (fl, an, FLfile, alert, confirm, prompt) {\n${f.v}\n;return {${names.map(n => `${n}: typeof ${n} === 'function' ? ${n} : undefined`).join(', ')}};\n}`;
+    }).join(',\n') : '';
+    const code = `(${jsflRuntime.toString()})();\nself.__files = {${files}};\nself.__jsfl = function (fl, an, FLfile, alert, confirm, prompt, __doc) {\n${src}\n};`;
+    let url; try { url = URL.createObjectURL(new Blob([code], { type: 'text/javascript' })); } catch (e) { return resolve({ error: 'could not start' }); }
+    const w = new Worker(url), sent = { sym: C().sym || null, frame: C().frame, layer: C().layer, sel: [...sel].join(',') };
+    const done = v => { clearTimeout(timer); w.terminate(); URL.revokeObjectURL(url); resolve(v); };
+    const timer = setTimeout(() => done({ error: 'took longer than 20 seconds' }), 20000);
+    w.onerror = ev => { ev.preventDefault(); const m = ev.message || 'error'; done(/syntax|unexpected|invalid or unexpected|missing/i.test(m) ? { syntax: m } : { error: m }); };
+    w.onmessage = ev => done(Object.assign({}, ev.data, { sent }));
+    w.postMessage({ P: JSON.parse(JSON.stringify(P)), cur: { sym: C().sym || null, frame: C().frame, layer: C().layer }, sel: [...sel], symBoxes, fill: toolNoFill ? null : toolFill, stroke: toolStroke, sw: toolW });
+  });
+}
+function applyJSFL(r, quiet) {
+  if (!r || !r.P) return false;
+  const before = JSON.stringify(P), after = JSON.stringify(r.P), moved = !quiet || !r.sent || (r.cur.sym || null) !== r.sent.sym || (r.cur.frame | 0) !== r.sent.frame || (r.cur.layer | 0) !== r.sent.layer || (r.sel || []).join(',') !== r.sent.sel;
+  if (after !== before) {
+    P = r.P;
+    if ((r.cur.sym || null) !== (C().sym || null)) { if (!r.cur.sym || !P.symbols[r.cur.sym]) ctx = [ctx[0]]; else ctx = [ctx[0], { sym: r.cur.sym, frame: 0, layer: 0, inPlace: false, xf: `translate(${P.w / 2} ${P.h / 2})` }]; }
+    C().frame = Math.max(0, r.cur.frame | 0); C().layer = r.cur.layer | 0; fixCtx(); sel = new Set(r.sel || []); commit(); return true;
+  }
+  if (moved) { C().frame = Math.max(0, r.cur.frame | 0); C().layer = r.cur.layer | 0; fixCtx(); sel = new Set(r.sel || []); renderAll(); }
+  return false;
+}
+window.addEventListener('message', ev => {
+  const d = ev.data; if (!d || d.__lw !== 1) return;
+  const pw = [...panelWins.values()].find(x => x.iframe.contentWindow === ev.source); if (!pw) return;
+  if (d.type === 'eval') cepEval(pw, d.script).then(result => { try { ev.source.postMessage({ __lw: 1, type: 'result', id: d.id, result: result == null ? '' : String(result) }, '*'); } catch (e) {} });
+  else if (d.type === 'close') closePanel(pw);
+  else if (d.type === 'url') { if (/^https?:/i.test(d.url)) window.open(d.url, '_blank', 'noopener'); }
+  else if (d.type === 'title') pw.title.textContent = d.title;
+  else if (d.type === 'resize' && d.w > 50 && d.h > 50) { pw.win.style.width = Math.min(innerWidth - 20, d.w) + 'px'; pw.win.style.height = Math.min(innerHeight - 20, d.h + 37) + 'px'; }
+  else if (d.type === 'open') { for (const x of extensions) for (const p of x.panels || []) if (p.id === d.ext) openPanel(x.id, p.id); }
+});
+/* tell open panels when the selection, the frame or the document changes, as Animate does */
+let panelSig = { sel: '', tl: '', doc: -1 };
+setInterval(() => {
+  if (!panelWins.size) return;
+  const s1 = [...sel].join(','), s2 = `${C().sym || ''}|${C().frame}|${C().layer}`, s3 = docVer * 1000 + hi, evs = [];
+  if (s1 !== panelSig.sel) evs.push('com.adobe.events.flash.selectionChanged');
+  if (s2 !== panelSig.tl) evs.push('com.adobe.events.flash.timelineChanged');
+  if (s3 !== panelSig.doc) evs.push('com.adobe.events.flash.documentChanged');
+  panelSig = { sel: s1, tl: s2, doc: s3 };
+  for (const pw of panelWins.values()) for (const event of evs) { try { pw.iframe.contentWindow.postMessage({ __lw: 1, type: 'event', event }, '*'); } catch (e) {} }
+}, 300);
+
+/* ---------- timeline zoom: 1 and 2 zoom whichever area you last clicked in ---------- */
+function tlZoom(dir, anchorX) {
+  const i = TL_ZOOMS.indexOf(CW), ni = clamp((i < 0 ? 5 : i) + dir, 0, TL_ZOOMS.length - 1); if (TL_ZOOMS[ni] === CW) return;
+  const L = lw(), ax = anchorX != null ? anchorX : (L + C().frame * CW + CW / 2 - tlscroll.scrollLeft), fAt = (tlscroll.scrollLeft + ax - L) / CW;
+  CW = TL_ZOOMS[ni]; document.documentElement.style.setProperty('--cw', CW + 'px'); renderTimeline();
+  tlscroll.scrollLeft = Math.max(0, L + fAt * CW - ax);
+  $('#fcount').textContent = `Timeline zoom ${Math.round(CW / 16 * 100)}%`;
+  try { localStorage.setItem('loopwerx-tlzoom', CW); } catch (e) {}
+}
+try { const z = +localStorage.getItem('loopwerx-tlzoom'); if (TL_ZOOMS.includes(z) && z !== CW) { CW = z; document.documentElement.style.setProperty('--cw', CW + 'px'); renderTimeline(); } } catch (e) {}
+$('#tl').addEventListener('pointerdown', () => { focusZone = 'tl'; }, true);
+$('#stagewrap').addEventListener('pointerdown', () => { focusZone = 'stage'; }, true);
+tlscroll.addEventListener('wheel', ev => { if (!(ev.ctrlKey || ev.metaKey || ev.altKey)) return; ev.preventDefault(); tlZoom(ev.deltaY < 0 ? 1 : -1, ev.clientX - tlscroll.getBoundingClientRect().left); }, { passive: false });
+
 /* ---------- keyboard ---------- */
 document.addEventListener('keydown', ev => {
   if (!$('#modal').hidden || !$('#xmodal').hidden || !$('#omodal').hidden || !$('#outmodal').hidden || !$('#psdmodal').hidden || !$('#splitwin').hidden) return;
@@ -5167,6 +5669,7 @@ document.addEventListener('keydown', ev => {
     case 'v': case 'V': setTool('select'); break;
     case 'b': case 'B': setTool('brush'); break;
     case 'y': case 'Y': setTool('pencil'); break;
+    case 'f': case 'F': if ($('#fpwin').hidden) openFP(); else closeFP(); break;
     case 'p': case 'P': setTool('paint'); break;
     case '[': if (tool === 'brush') { vbrush.size = Math.max(1, Math.round(vbrush.size / 1.15)); saveVB(); renderProps(); toast('Brush size ' + vbrush.size); } else if (tool === 'paint') { paint.size = Math.max(1, Math.round(paint.size / 1.15)); renderProps(); toast('Paint size ' + paint.size); } break;
     case ']': if (tool === 'brush') { vbrush.size = Math.min(200, Math.round(vbrush.size * 1.15 + 1)); saveVB(); renderProps(); toast('Brush size ' + vbrush.size); } else if (tool === 'paint') { paint.size = Math.min(400, Math.round(paint.size * 1.15 + 1)); renderProps(); toast('Paint size ' + paint.size); } break;
@@ -5186,8 +5689,8 @@ document.addEventListener('keydown', ev => {
     case 'F7': ev.preventDefault(); insertKey(true); break;
     case 'F8': ev.preventDefault(); convertToSymbol(); break;
     case 'Enter': ev.preventDefault(); togglePlay(); break;
-    case '2': zoomBy(1.25); break;
-    case '1': zoomBy(1 / 1.25); break;
+    case '2': if (focusZone === 'tl') tlZoom(1); else zoomBy(1.25); break;
+    case '1': if (focusZone === 'tl') tlZoom(-1); else zoomBy(1 / 1.25); break;
     case ',': setFrame(C().frame - 1); break;
     case 'Home': ev.preventDefault(); goFrame(0); break;
     case 'End': ev.preventDefault(); goFrame(tlLen(curTL()) - 1); break;

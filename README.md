@@ -4,6 +4,8 @@ A 2D animation app for the browser, built around symbols with their own timeline
 
 Loopwerx is one HTML file. It has no build step and no server, and your work is saved in your browser.
 
+The version number is in the top bar. Click it to see what changed, or read [CHANGELOG.md](CHANGELOG.md).
+
 ![Loopwerx with the example scene open](docs/screenshot.png)
 
 ## Getting started
@@ -24,10 +26,12 @@ Loopwerx opens with a small example: a face whose mouth is a symbol, with the mo
 ### Symbols and timelines
 - Convert any drawing to a symbol (F8). Every symbol has its own timeline with layers and keyframes.
 - Double-click a symbol to edit it in place. The breadcrumb at the top takes you back out.
-- **Frame picker:** for each keyframe, choose which frame of the symbol shows, and whether it loops, plays once or holds a single frame. This is how lip sync and blinks work.
+- **Frame Picker (F):** a floating window that shows every frame inside the selected symbol as a thumbnail, with a large preview and a slider. Click a frame and the symbol shows it on the current timeline frame, with a keyframe made for you. Filter by labels or by the symbol's own keyframes, and step between keyframes on the layer. This is how lip sync and blinks work.
+- For each keyframe, choose whether the symbol loops, plays once or holds a single frame.
 - **Layer palette:** show and hide a symbol's own layers, or pin one of them to a frame, without opening the symbol.
 - Frame labels, onion skin, motion guides, and classic and shape tweens with easing.
 - Drag keyframes to move them. Alt-drag copies, and Shift-click selects more than one.
+- Zoom the timeline with 1 and 2 after clicking in it, or with Ctrl and the mouse wheel.
 
 ### Drawing
 - **Pencil (Y):** an even line in the stroke colour, with ink, smooth and straighten modes.
@@ -35,6 +39,7 @@ Loopwerx opens with a small example: a face whose mouth is a symbol, with the mo
 - **Textured brush (P):** soft, airbrushed and textured paint kept as vector dabs. It includes the Milo Soft Brushes, and Toon Boom brush files (`.tbr`) can be imported.
 - Rectangle and oval tools, an eraser, a gap-closing paint bucket, an ink bottle, lasso and subselection.
 - Brush modes: normal, paint behind, paint fills, paint selection and paint inside.
+- **Fill and stroke selection, as in Flash:** one click selects just the fill or just the outline, and a double-click selects both. Delete removes only the part you selected, and dragging a part pulls it away from the rest. You can turn this off in the Edit menu.
 - Solid colours and linear or radial gradients.
 
 ### Deforming
@@ -56,7 +61,10 @@ Loopwerx opens with a small example: a face whose mouth is a symbol, with the mo
 - Auto save, named projects, snapshots, and download and open of project files (`.json`, with pictures and sound inside).
 - Export the whole scene to animated GIF or MP4 (with sound), or the current frame to PNG or SVG.
 - Stage size presets, including 1920 × 1080 and 1080 × 1920.
-- **Flash extensions:** run JSFL scripts from the Commands menu and install `.zxp` and `.mxp` packages that contain them. Scripts run in a worker against a subset of the Flash JavaScript API.
+- **Flash and Animate extensions:** install `.zxp`, `.mxp` and `.jsfl` files from the Commands menu.
+  - HTML panels (CEP) open in their own floating window. Loopwerx stands in for Adobe's CSInterface, so `evalScript` calls, `fl.runScript` into the extension's own JSFL files, and selection, timeline and document events all work.
+  - JSFL commands run in a worker against a subset of the Flash JavaScript API.
+  - Panels that depend on Animate features Loopwerx doesn't have, native file access or SWF won't fully work.
 
 ## Keyboard shortcuts
 
@@ -70,11 +78,12 @@ Loopwerx opens with a small example: a face whose mouth is a symbol, with the mo
 | B | Brush | Enter | Play / stop |
 | P | Textured brush | , and . | Previous / next frame |
 | E | Eraser | Home / End | First / last frame |
-| R | Rectangle | 1 / 2 | Zoom out / in |
+| R | Rectangle | 1 / 2 | Zoom the stage out / in |
 | O | Oval | [ and ] | Brush size |
 | K | Paint bucket | M | Brush mode |
 | S | Ink bottle | Delete | Delete selection |
 | X | Bone | Esc | Leave symbol or weight painting |
+| F | Frame Picker window | 1 / 2 in the timeline | Zoom the timeline out / in |
 | Ctrl+Z / Ctrl+Shift+Z | Undo / redo | Ctrl+C / X / V | Copy / cut / paste |
 | Ctrl+D | Duplicate | Ctrl+Shift+V | Paste in place |
 | Ctrl+A | Select all | Ctrl+Shift+I | Import image |
