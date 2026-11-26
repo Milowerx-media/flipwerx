@@ -1,0 +1,14 @@
+# OS and editor files
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+.vscode/
+.idea/
+
+# Local test output and exported animations
+*.gif
+*.mp4
+*.webm
+!docs/**
+node_modules/
